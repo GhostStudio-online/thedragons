@@ -1,0 +1,139 @@
+:root {
+    --body-bg: #242424;
+    --header-bg: #242424;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 12px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: var(--body-bg);
+}
+
+header {
+    width: 100%;
+    height: 5.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 15;
+    padding: 0 2rem;
+    background-color: var(--header-bg);
+    box-shadow: 1px 0px 5px black;
+}
+
+.header-links {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.header-links a {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: white;
+    text-decoration: none;
+}
+
+#burger-menu-open {
+    font-size: 1.2rem;
+    color: white;
+    cursor: pointer;
+}
+
+#header-avatar {
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+}
+
+#header-account {
+    font-size: 1.2rem;
+    color: white;
+    cursor: pointer;
+}
+
+#burger-menu {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    background-color: #1a1a1a;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+#burger-menu.active {
+    transform: translateX(0%);
+}
+
+#burger-menu-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.2rem;
+    color: rgb(255, 255, 255);
+}
+
+.burger-menu-links {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.burger-menu-links a {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: white;
+    text-decoration: none;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 1200px) {
+    html {
+        font-size: 22px;
+    }
+
+    header {
+        padding: 0 2.2rem;
+    }
+
+    .header-links {
+        display: flex;
+    }
+
+    #burger-menu-open {
+        display: none;
+    }
+}
