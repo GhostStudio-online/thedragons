@@ -3,37 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Dragons | Official Esports Team</title>
+    <title>The Dragons | 2025 Season</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts (Orbitron для кіберспортивного вайбу & Inter для тексту) -->
+    <!-- Fonts: Syne (для заголовків) & Space Grotesk (для тексту) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
     
-    <!-- GSAP для анімацій -->
+    <!-- Libraries: GSAP, ScrollTrigger, Lenis (Smooth Scroll) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
-    <!-- Налаштування Tailwind -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'dragons-black': '#050505',
-                        'dragons-white': '#FAFAFA',
-                        'dragons-gray': '#1A1A1A',
+                        black: '#080808',
+                        white: '#F2F2F2',
+                        gray: '#888888'
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        orbitron: ['Orbitron', 'sans-serif'],
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        display: ['Syne', 'sans-serif'],
                     },
                     backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                        'yin-yang': 'linear-gradient(110deg, #050505 50%, #FAFAFA 50%)',
+                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.07%22/%3E%3C/svg%3E')",
                     }
                 }
             }
@@ -41,432 +40,382 @@
     </script>
 
     <style>
-        /* Кастомні стилі та анімації */
         body {
+            cursor: none; /* Приховуємо курсор */
+            background-color: #080808;
             overflow-x: hidden;
         }
-        
-        .clip-diagonal {
-            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-        }
 
-        .clip-card {
-            clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
-        }
-
-        /* Glitch Text Effect */
-        .glitch-wrapper {
-            position: relative;
-        }
-        
-        .glitch {
-            position: relative;
-            color: white;
+        /* Custom Cursor */
+        .cursor-dot {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
             mix-blend-mode: difference;
+            transition: transform 0.1s;
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid white;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            mix-blend-mode: difference;
+            transition: all 0.3s ease-out;
         }
         
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Hover state for cursor */
+        body.hovering .cursor-outline {
+            transform: scale(1.5);
+            background: white;
+            border-color: transparent;
+        }
+
+        /* Typography Utilities */
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+            color: transparent;
+        }
+
+        /* Animations */
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        
+        /* Smooth Marquee */
+        .marquee-wrap {
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .marquee-inner {
+            display: inline-block;
+            animation: marquee 15s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        /* Yin Yang Hero Split */
+        .split-bg {
+            background: linear-gradient(90deg, #080808 50%, #F2F2F2 50%);
+        }
+        
+        /* Magic Blend Mode for Visibility */
+        .blend-mode-diff {
+            mix-blend-mode: difference;
+            color: #F2F2F2; /* Білий, який стане чорним на білому фоні */
+        }
+
+        /* Preloader */
+        .preloader {
+            height: 100vh;
             width: 100%;
-            height: 100%;
-        }
-        
-        .glitch::before {
-            left: 2px;
-            text-shadow: -1px 0 #ff00c1;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 5s infinite linear alternate-reverse;
-        }
-        
-        .glitch::after {
-            left: -2px;
-            text-shadow: -1px 0 #00fff9;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim2 5s infinite linear alternate-reverse;
-        }
-        
-        @keyframes glitch-anim {
-            0% { clip: rect(30px, 9999px, 10px, 0); }
-            20% { clip: rect(85px, 9999px, 90px, 0); }
-            40% { clip: rect(10px, 9999px, 60px, 0); }
-            60% { clip: rect(50px, 9999px, 20px, 0); }
-            80% { clip: rect(20px, 9999px, 100px, 0); }
-            100% { clip: rect(65px, 9999px, 40px, 0); }
-        }
-
-        @keyframes glitch-anim2 {
-            0% { clip: rect(10px, 9999px, 80px, 0); }
-            20% { clip: rect(100px, 9999px, 10px, 0); }
-            40% { clip: rect(60px, 9999px, 20px, 0); }
-            60% { clip: rect(20px, 9999px, 40px, 0); }
-            80% { clip: rect(80px, 9999px, 5px, 0); }
-            100% { clip: rect(40px, 9999px, 90px, 0); }
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #050505;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-        
-        /* Image Placeholder Pattern */
-        .player-bg {
-            background-image: radial-gradient(#333 1px, transparent 1px);
-            background-size: 20px 20px;
+            position: fixed;
+            top: 0;
+            z-index: 10000;
+            background: #080808;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
-<body class="bg-dragons-black text-white selection:bg-white selection:text-black">
+<body class="antialiased text-white">
 
-    <!-- НАВІГАЦІЯ -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 border-b border-white/10 bg-black/80 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex-shrink-0 cursor-pointer group">
-                    <span class="font-orbitron text-2xl font-bold tracking-wider group-hover:text-gray-400 transition-colors">THE <span class="text-white">DRAGONS</span></span>
-                </div>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8 font-orbitron text-sm uppercase tracking-widest">
-                        <a href="#home" class="hover:text-gray-400 transition-colors duration-300">Головна</a>
-                        <a href="#roster" class="hover:text-gray-400 transition-colors duration-300 relative group">
-                            Команда
-                            <!-- Dropdown Example -->
-                            <div class="absolute left-0 mt-2 w-48 bg-black border border-white/20 rounded shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                                <a href="#" class="block px-4 py-2 text-xs hover:bg-white hover:text-black transition-colors">Основний склад</a>
-                                <a href="#" class="block px-4 py-2 text-xs hover:bg-white hover:text-black transition-colors">Академія</a>
-                                <a href="#" class="block px-4 py-2 text-xs hover:bg-white hover:text-black transition-colors">Тренери</a>
-                            </div>
-                        </a>
-                        <a href="#about" class="hover:text-gray-400 transition-colors duration-300">Про нас</a>
-                        <a href="#partners" class="hover:text-gray-400 transition-colors duration-300">Партнери</a>
-                        <a href="#" class="bg-white text-black px-6 py-2 font-bold hover:bg-gray-300 transition-transform hover:scale-105 clip-card">SHOP</a>
-                    </div>
-                </div>
+    <!-- NOISE OVERLAY -->
+    <div class="fixed inset-0 w-full h-full pointer-events-none z-[50] bg-noise opacity-40"></div>
 
-                <!-- Mobile menu button -->
-                <div class="-mr-2 flex md:hidden">
-                    <button type="button" onclick="toggleMenu()" class="inline-flex items-center justify-center p-2 text-white hover:text-gray-300 focus:outline-none">
-                        <svg class="h-8 w-8" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                            <path class="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot hidden md:block"></div>
+    <div class="cursor-outline hidden md:block"></div>
+
+    <!-- PRELOADER -->
+    <div class="preloader">
+        <div class="flex flex-col items-center">
+            <div class="text-6xl md:text-9xl font-display font-bold uppercase tracking-tighter counter">0%</div>
+            <div class="mt-4 text-xs font-mono uppercase tracking-[0.5em] text-gray">Loading Assets</div>
         </div>
+    </div>
 
-        <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-black border-b border-white/10 absolute w-full">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 font-orbitron text-center">
-                <a href="#home" class="block px-3 py-4 hover:bg-white hover:text-black transition-colors">Головна</a>
-                <a href="#roster" class="block px-3 py-4 hover:bg-white hover:text-black transition-colors">Команда</a>
-                <a href="#about" class="block px-3 py-4 hover:bg-white hover:text-black transition-colors">Про нас</a>
-                <a href="#" class="block px-3 py-4 bg-white text-black font-bold">МАГАЗИН</a>
-            </div>
+    <!-- NAV -->
+    <nav class="fixed top-0 w-full z-40 px-6 py-8 flex justify-between items-center blend-mode-diff">
+        <div class="font-display font-bold text-xl tracking-tighter uppercase hover-target cursor-pointer">The Dragons</div>
+        <div class="hidden md:flex gap-12 font-mono text-xs uppercase tracking-widest">
+            <a href="#roster" class="hover-target relative group">Roster
+                <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all group-hover:w-full"></span>
+            </a>
+            <a href="#about" class="hover-target relative group">About
+                <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all group-hover:w-full"></span>
+            </a>
+            <a href="#" class="hover-target relative group">Shop
+                <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all group-hover:w-full"></span>
+            </a>
         </div>
+        <div class="md:hidden font-display font-bold">MENU</div>
     </nav>
 
-    <!-- HERO SECTION (YIN & YANG) -->
-    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden bg-yin-yang">
-        <!-- Decorative Elements -->
-        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDQwaDQwVjBIMHY0MHptMjAtMjBoMjB2MjBIMjBWMjB6TTAgMjBoMjB2MjBIMFYyMHoiIGZpbGw9IiZmZmZmZiIgZmlsbC1vcGFjaXR5PSIwLjEiLz48L2c+PC9zdmc+')]"></div>
+    <!-- HERO SECTION -->
+    <header class="relative h-screen w-full overflow-hidden split-bg flex flex-col justify-center items-center">
         
-        <div class="relative z-10 text-center px-4">
-            <h2 class="font-orbitron text-xl md:text-3xl tracking-[0.5em] mb-4 text-gray-400 animate-fade-in-up">DOMINATE THE GAME</h2>
-            <div class="glitch-wrapper mb-6">
-                <h1 class="glitch font-orbitron text-6xl md:text-9xl font-black uppercase mix-blend-difference" data-text="THE DRAGONS">THE DRAGONS</h1>
-            </div>
-            <p class="font-sans text-lg md:text-xl max-w-2xl mx-auto mb-10 text-gray-300 font-light mix-blend-difference">
-                Баланс. Сила. Перемога. Ми — нове покоління кіберспорту.
-            </p>
+        <!-- Central Text with Blend Mode -->
+        <div class="relative z-10 text-center mix-blend-difference text-[#F2F2F2] flex flex-col items-center">
+            <p class="font-mono text-xs md:text-sm tracking-[0.8em] uppercase mb-4 md:mb-8 animate-up">Est. 2025 Ukraine</p>
             
-            <div class="flex flex-col md:flex-row gap-6 justify-center items-center mix-blend-difference">
-                <a href="#roster" class="px-10 py-4 border-2 border-white text-white font-orbitron font-bold hover:bg-white hover:text-black transition-all duration-300 clip-card">
-                    НАШ СКЛАД
-                </a>
-                <a href="#" class="px-10 py-4 bg-white text-black font-orbitron font-bold hover:bg-gray-200 transition-all duration-300 clip-card">
-                    ДИВИТИСЯ МАТЧІ
-                </a>
+            <h1 class="font-display text-[15vw] leading-[0.8] font-black uppercase tracking-tighter animate-up hover-target">
+                THE<br>DRAGONS
+            </h1>
+            
+            <div class="mt-8 max-w-md mx-auto text-center px-4 animate-up">
+                <p class="font-sans text-sm md:text-lg leading-relaxed font-light opacity-80 uppercase tracking-wide">
+                    Ми народжені в хаосі. Ми приносимо порядок. <br> Чорне та біле. Перемога або нічого.
+                </p>
             </div>
         </div>
 
+        <!-- Decoration Circle -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30vw] h-[30vw] rounded-full border border-current opacity-20 animate-spin-slow mix-blend-difference text-white pointer-events-none"></div>
+        
         <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce mix-blend-difference">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 mix-blend-difference text-white flex flex-col items-center gap-2 animate-bounce">
+            <span class="text-[10px] font-mono uppercase tracking-widest">Scroll</span>
+            <div class="w-[1px] h-12 bg-white"></div>
         </div>
-    </section>
+    </header>
+
+    <!-- MARQUEE -->
+    <div class="py-6 bg-white text-black overflow-hidden border-y border-black">
+        <div class="marquee-wrap">
+            <div class="marquee-inner font-display text-4xl md:text-6xl font-bold uppercase tracking-tight">
+                Dominate the server — Tier 1 Performance — Born to win — The Dragons — Ukrainian Powerhouse — Dominate the server — Tier 1 Performance — Born to win — The Dragons —
+            </div>
+        </div>
+    </div>
 
     <!-- ROSTER SECTION -->
-    <section id="roster" class="py-24 bg-dragons-black relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-20">
-                <h2 class="font-orbitron text-4xl md:text-6xl font-bold text-white mb-4 roster-title">ACTIVE <span class="text-gray-500">ROSTER</span></h2>
-                <div class="h-1 w-24 bg-white mx-auto"></div>
+    <section id="roster" class="relative bg-black py-32 px-4 md:px-10">
+        <div class="max-w-[1800px] mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-24 border-b border-white/20 pb-8">
+                <h2 class="font-display text-6xl md:text-9xl uppercase font-bold leading-none text-white">Active<br><span class="text-gray-600">Roster</span></h2>
+                <div class="text-right mt-8 md:mt-0">
+                    <p class="font-mono text-sm text-gray-400 uppercase tracking-widest">Season 2025</p>
+                    <p class="font-mono text-sm text-white uppercase tracking-widest">Main Lineup</p>
+                </div>
             </div>
 
-            <!-- Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            <!-- Player List (Vertical Brutalist Style) -->
+            <div class="flex flex-col gap-0">
                 
-                <!-- Player 1: CryPanter -->
-                <div class="group relative h-[500px] w-full bg-dragons-gray clip-card overflow-hidden cursor-pointer player-card">
-                    <div class="absolute inset-0 player-bg opacity-20"></div>
-                    <!-- Image Placeholder -->
-                    <div class="absolute inset-0 flex items-end justify-center transition-transform duration-500 group-hover:scale-110">
-                        <img src="https://ui-avatars.com/api/?name=C+P&background=111&color=fff&size=512&font-size=0.3" alt="CryPanter" class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
-                    </div>
-                    <!-- Content -->
-                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
-                        <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                            <p class="font-orbitron text-xs text-gray-400 tracking-widest mb-1">IGL / ENTRY</p>
-                            <h3 class="font-orbitron text-2xl font-bold text-white">CryPanter</h3>
-                            <div class="h-0 group-hover:h-auto overflow-hidden transition-all duration-300 opacity-0 group-hover:opacity-100 mt-2">
-                                <p class="text-xs text-gray-300 font-sans">Лідер команди. Майстер тактики та першого контакту.</p>
-                                <div class="mt-3 flex gap-2 text-xs font-mono text-white">
-                                    <span>ADR: 89.4</span> | <span>K/D: 1.15</span>
-                                </div>
-                            </div>
+                <!-- Player 1 -->
+                <div class="player-row group relative border-b border-white/10 py-16 hover:bg-white hover:text-black transition-all duration-500 cursor-none">
+                    <div class="flex flex-col md:flex-row justify-between items-center relative z-10 px-4 hover-target">
+                        <div class="md:w-1/3 text-left">
+                            <span class="font-mono text-xs border border-current px-3 py-1 rounded-full uppercase tracking-widest">IGL / Entry</span>
+                        </div>
+                        <div class="md:w-1/3 text-center">
+                            <h3 class="font-display text-5xl md:text-8xl font-bold uppercase tracking-tighter transition-transform group-hover:scale-110 duration-500">CryPanter</h3>
+                        </div>
+                        <div class="md:w-1/3 text-right hidden md:block">
+                            <span class="font-display text-6xl font-bold opacity-20 group-hover:opacity-100 transition-opacity">01</span>
                         </div>
                     </div>
-                    <!-- Border Effect -->
-                    <div class="absolute inset-0 border border-white/10 group-hover:border-white/50 transition-colors duration-300 pointer-events-none clip-card"></div>
+                    <!-- Hover Image (Reveals on hover) -->
+                    <img src="https://ui-avatars.com/api/?name=C+P&background=000&color=fff&size=512" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] object-cover opacity-0 group-hover:opacity-20 pointer-events-none transition-opacity duration-300 blur-sm z-0 grayscale" alt="">
                 </div>
 
-                <!-- Player 2: MrKolesnyk -->
-                <div class="group relative h-[500px] w-full bg-white clip-card overflow-hidden cursor-pointer player-card">
-                    <div class="absolute inset-0 player-bg opacity-10 bg-black"></div>
-                    <div class="absolute inset-0 flex items-end justify-center transition-transform duration-500 group-hover:scale-110">
-                        <img src="https://ui-avatars.com/api/?name=M+K&background=ddd&color=000&size=512&font-size=0.3" alt="MrKolesnyk" class="w-full h-full object-cover opacity-70 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
-                    </div>
-                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-white via-white/90 to-transparent">
-                        <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                            <p class="font-orbitron text-xs text-gray-600 tracking-widest mb-1 font-bold">AWPER</p>
-                            <h3 class="font-orbitron text-2xl font-bold text-black">MrKolesnyk</h3>
-                            <div class="h-0 group-hover:h-auto overflow-hidden transition-all duration-300 opacity-0 group-hover:opacity-100 mt-2">
-                                <p class="text-xs text-gray-800 font-sans">Король снайперської гвинтівки. Не пробачає помилок.</p>
-                                <div class="mt-3 flex gap-2 text-xs font-mono text-black">
-                                    <span>ACC: 64%</span> | <span>K/D: 1.42</span>
-                                </div>
-                            </div>
+                <!-- Player 2 -->
+                <div class="player-row group relative border-b border-white/10 py-16 hover:bg-white hover:text-black transition-all duration-500 cursor-none">
+                    <div class="flex flex-col md:flex-row justify-between items-center relative z-10 px-4 hover-target">
+                        <div class="md:w-1/3 text-left">
+                            <span class="font-mono text-xs border border-current px-3 py-1 rounded-full uppercase tracking-widest">AWPer</span>
+                        </div>
+                        <div class="md:w-1/3 text-center">
+                            <h3 class="font-display text-5xl md:text-8xl font-bold uppercase tracking-tighter transition-transform group-hover:scale-110 duration-500">MrKolesnyk</h3>
+                        </div>
+                        <div class="md:w-1/3 text-right hidden md:block">
+                            <span class="font-display text-6xl font-bold opacity-20 group-hover:opacity-100 transition-opacity">02</span>
                         </div>
                     </div>
-                    <div class="absolute inset-0 border border-black/10 group-hover:border-black/50 transition-colors duration-300 pointer-events-none clip-card"></div>
+                    <img src="https://ui-avatars.com/api/?name=M+K&background=fff&color=000&size=512" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] object-cover opacity-0 group-hover:opacity-20 pointer-events-none transition-opacity duration-300 blur-sm z-0 grayscale" alt="">
                 </div>
 
-                <!-- Player 3: Nergo -->
-                <div class="group relative h-[500px] w-full bg-dragons-gray clip-card overflow-hidden cursor-pointer player-card">
-                    <div class="absolute inset-0 player-bg opacity-20"></div>
-                    <div class="absolute inset-0 flex items-end justify-center transition-transform duration-500 group-hover:scale-110">
-                        <img src="https://ui-avatars.com/api/?name=N+G&background=111&color=fff&size=512&font-size=0.3" alt="Nergo" class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
-                    </div>
-                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
-                        <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                            <p class="font-orbitron text-xs text-gray-400 tracking-widest mb-1">RIFLER</p>
-                            <h3 class="font-orbitron text-2xl font-bold text-white">Nergo</h3>
-                            <div class="h-0 group-hover:h-auto overflow-hidden transition-all duration-300 opacity-0 group-hover:opacity-100 mt-2">
-                                <p class="text-xs text-gray-300 font-sans">Надійна опора. Хедшоти — його повсякденність.</p>
-                                <div class="mt-3 flex gap-2 text-xs font-mono text-white">
-                                    <span>HS%: 58%</span> | <span>K/D: 1.10</span>
-                                </div>
-                            </div>
+                <!-- Player 3 -->
+                <div class="player-row group relative border-b border-white/10 py-16 hover:bg-white hover:text-black transition-all duration-500 cursor-none">
+                    <div class="flex flex-col md:flex-row justify-between items-center relative z-10 px-4 hover-target">
+                        <div class="md:w-1/3 text-left">
+                            <span class="font-mono text-xs border border-current px-3 py-1 rounded-full uppercase tracking-widest">Rifler</span>
+                        </div>
+                        <div class="md:w-1/3 text-center">
+                            <h3 class="font-display text-5xl md:text-8xl font-bold uppercase tracking-tighter transition-transform group-hover:scale-110 duration-500">Nergo</h3>
+                        </div>
+                        <div class="md:w-1/3 text-right hidden md:block">
+                            <span class="font-display text-6xl font-bold opacity-20 group-hover:opacity-100 transition-opacity">03</span>
                         </div>
                     </div>
-                    <div class="absolute inset-0 border border-white/10 group-hover:border-white/50 transition-colors duration-300 pointer-events-none clip-card"></div>
+                    <img src="https://ui-avatars.com/api/?name=N+G&background=000&color=fff&size=512" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] object-cover opacity-0 group-hover:opacity-20 pointer-events-none transition-opacity duration-300 blur-sm z-0 grayscale" alt="">
                 </div>
 
-                <!-- Player 4: ATBESHKA -->
-                <div class="group relative h-[500px] w-full bg-white clip-card overflow-hidden cursor-pointer player-card">
-                    <div class="absolute inset-0 player-bg opacity-10 bg-black"></div>
-                    <div class="absolute inset-0 flex items-end justify-center transition-transform duration-500 group-hover:scale-110">
-                        <img src="https://ui-avatars.com/api/?name=A+T&background=ddd&color=000&size=512&font-size=0.3" alt="ATBESHKA" class="w-full h-full object-cover opacity-70 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
-                    </div>
-                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-white via-white/90 to-transparent">
-                        <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                            <p class="font-orbitron text-xs text-gray-600 tracking-widest mb-1 font-bold">RIFLER / SUPPORT</p>
-                            <h3 class="font-orbitron text-2xl font-bold text-black">ATBESHKA</h3>
-                            <div class="h-0 group-hover:h-auto overflow-hidden transition-all duration-300 opacity-0 group-hover:opacity-100 mt-2">
-                                <p class="text-xs text-gray-800 font-sans">Головний по гранатах та клатчах. Залізні нерви.</p>
-                                <div class="mt-3 flex gap-2 text-xs font-mono text-black">
-                                    <span>KAST: 78%</span> | <span>K/D: 1.05</span>
-                                </div>
-                            </div>
+                <!-- Player 4 -->
+                <div class="player-row group relative border-b border-white/10 py-16 hover:bg-white hover:text-black transition-all duration-500 cursor-none">
+                    <div class="flex flex-col md:flex-row justify-between items-center relative z-10 px-4 hover-target">
+                        <div class="md:w-1/3 text-left">
+                            <span class="font-mono text-xs border border-current px-3 py-1 rounded-full uppercase tracking-widest">Rifler / Support</span>
+                        </div>
+                        <div class="md:w-1/3 text-center">
+                            <h3 class="font-display text-5xl md:text-8xl font-bold uppercase tracking-tighter transition-transform group-hover:scale-110 duration-500">ATBESHKA</h3>
+                        </div>
+                        <div class="md:w-1/3 text-right hidden md:block">
+                            <span class="font-display text-6xl font-bold opacity-20 group-hover:opacity-100 transition-opacity">04</span>
                         </div>
                     </div>
-                    <div class="absolute inset-0 border border-black/10 group-hover:border-black/50 transition-colors duration-300 pointer-events-none clip-card"></div>
+                    <img src="https://ui-avatars.com/api/?name=A+T&background=fff&color=000&size=512" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] object-cover opacity-0 group-hover:opacity-20 pointer-events-none transition-opacity duration-300 blur-sm z-0 grayscale" alt="">
                 </div>
 
-                <!-- Player 5: Zavik4 -->
-                <div class="group relative h-[500px] w-full bg-dragons-gray clip-card overflow-hidden cursor-pointer player-card">
-                    <div class="absolute inset-0 player-bg opacity-20"></div>
-                    <div class="absolute inset-0 flex items-end justify-center transition-transform duration-500 group-hover:scale-110">
-                        <img src="https://ui-avatars.com/api/?name=Z+4&background=111&color=fff&size=512&font-size=0.3" alt="Zavik4" class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
-                    </div>
-                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
-                        <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                            <p class="font-orbitron text-xs text-gray-400 tracking-widest mb-1">LURKER</p>
-                            <h3 class="font-orbitron text-2xl font-bold text-white">Zavik4</h3>
-                            <div class="h-0 group-hover:h-auto overflow-hidden transition-all duration-300 opacity-0 group-hover:opacity-100 mt-2">
-                                <p class="text-xs text-gray-300 font-sans">Тінь команди. Він там, де його не чекають.</p>
-                                <div class="mt-3 flex gap-2 text-xs font-mono text-white">
-                                    <span>CLUTCH: 9/10</span> | <span>K/D: 1.12</span>
-                                </div>
-                            </div>
+                <!-- Player 5 -->
+                <div class="player-row group relative border-b border-white/10 py-16 hover:bg-white hover:text-black transition-all duration-500 cursor-none">
+                    <div class="flex flex-col md:flex-row justify-between items-center relative z-10 px-4 hover-target">
+                        <div class="md:w-1/3 text-left">
+                            <span class="font-mono text-xs border border-current px-3 py-1 rounded-full uppercase tracking-widest">Lurker</span>
+                        </div>
+                        <div class="md:w-1/3 text-center">
+                            <h3 class="font-display text-5xl md:text-8xl font-bold uppercase tracking-tighter transition-transform group-hover:scale-110 duration-500">Zavik4</h3>
+                        </div>
+                        <div class="md:w-1/3 text-right hidden md:block">
+                            <span class="font-display text-6xl font-bold opacity-20 group-hover:opacity-100 transition-opacity">05</span>
                         </div>
                     </div>
-                    <div class="absolute inset-0 border border-white/10 group-hover:border-white/50 transition-colors duration-300 pointer-events-none clip-card"></div>
+                    <img src="https://ui-avatars.com/api/?name=Z+V&background=000&color=fff&size=512" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] object-cover opacity-0 group-hover:opacity-20 pointer-events-none transition-opacity duration-300 blur-sm z-0 grayscale" alt="">
                 </div>
 
             </div>
         </div>
     </section>
 
-    <!-- ABOUT / STATISTICS SECTION -->
-    <section id="about" class="py-20 bg-white text-black clip-diagonal">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center">
-            <div class="md:w-1/2 mb-10 md:mb-0 pr-0 md:pr-10 animate-on-scroll">
-                <h2 class="font-orbitron text-5xl font-bold mb-6">LEGACY OF <br>DRAGONS</h2>
-                <p class="text-gray-700 text-lg mb-6 font-sans leading-relaxed">
-                    Ми не просто команда, ми — ідеологія. Поєднання холодної дисципліни та гарячого бажання перемагати. Кожен матч — це битва, де Інь та Ян сходяться в ідеальному танці смерті.
-                </p>
-                <div class="flex gap-8 mt-8">
-                    <div>
-                        <p class="text-4xl font-black font-orbitron">84%</p>
-                        <p class="text-sm text-gray-500 uppercase tracking-widest">Win Rate</p>
-                    </div>
-                    <div>
-                        <p class="text-4xl font-black font-orbitron">#1</p>
-                        <p class="text-sm text-gray-500 uppercase tracking-widest">Regional Rank</p>
-                    </div>
-                    <div>
-                        <p class="text-4xl font-black font-orbitron">12</p>
-                        <p class="text-sm text-gray-500 uppercase tracking-widest">Trophies</p>
-                    </div>
-                </div>
+    <!-- BIG FOOTER (MINIMALIST) -->
+    <footer class="bg-white text-black py-20 md:py-32 px-6 relative overflow-hidden">
+        <div class="max-w-[1800px] mx-auto flex flex-col justify-between h-full">
+            <div class="mb-20">
+                <h2 class="font-display text-[12vw] leading-none font-black uppercase tracking-tighter text-black text-center md:text-left">
+                    Ready to<br>Strike
+                </h2>
             </div>
-            <div class="md:w-1/2 relative animate-on-scroll">
-                <!-- Abstract Art representing Yin Yang -->
-                <div class="aspect-square w-full max-w-md mx-auto bg-black rounded-full relative flex items-center justify-center border-4 border-black shadow-2xl overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1/2 bg-white"></div>
-                    <div class="absolute top-[25%] left-0 w-1/2 h-1/2 bg-white rounded-full"></div>
-                    <div class="absolute top-[25%] right-0 w-1/2 h-1/2 bg-black rounded-full"></div>
-                    <div class="z-10 text-8xl mix-blend-difference text-white font-orbitron font-bold animate-pulse">DRAGONS</div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-end border-t border-black pt-8">
+                <div class="font-mono text-sm uppercase tracking-widest mb-4 md:mb-0">
+                    Kyiv, Ukraine<br>
+                    Est. 2025
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PARTNERS -->
-    <section id="partners" class="py-16 bg-dragons-black">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-gray-500 font-orbitron text-sm tracking-[0.3em] mb-10">OUR PARTNERS</p>
-            <div class="flex flex-wrap justify-center gap-12 md:gap-24 opacity-50 grayscale">
-                <!-- Fake Logos using text for simplicity, normally these are SVGs -->
-                <div class="text-2xl font-bold font-orbitron hover:text-white hover:opacity-100 hover:grayscale-0 transition-all cursor-pointer">LOGITECH</div>
-                <div class="text-2xl font-bold font-orbitron hover:text-white hover:opacity-100 hover:grayscale-0 transition-all cursor-pointer">RED BULL</div>
-                <div class="text-2xl font-bold font-orbitron hover:text-white hover:opacity-100 hover:grayscale-0 transition-all cursor-pointer">NVIDIA</div>
-                <div class="text-2xl font-bold font-orbitron hover:text-white hover:opacity-100 hover:grayscale-0 transition-all cursor-pointer">SECRET LAB</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-black border-t border-white/10 pt-12 pb-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0">
-                    <span class="font-orbitron text-2xl font-bold text-white">THE DRAGONS</span>
-                    <p class="text-gray-500 text-sm mt-2">© 2024 The Dragons Esports. All rights reserved.</p>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Twitter/X</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Instagram</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Twitch</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">YouTube</a>
+                
+                <div class="font-display font-bold text-xl uppercase tracking-tighter">
+                    © 2025 THE DRAGONS
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Mobile Menu Toggle
-        function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
+        // 1. Initialize Lenis (Smooth Scroll)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
         }
+        requestAnimationFrame(raf);
 
-        // GSAP Animations
-        document.addEventListener("DOMContentLoaded", (event) => {
-            gsap.registerPlugin(ScrollTrigger);
+        // 2. Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const hoverTargets = document.querySelectorAll('.hover-target');
 
-            // Hero Animations
-            gsap.from("h1.glitch", {
-                duration: 1.5,
-                y: 50,
-                opacity: 0,
-                ease: "power4.out",
-                delay: 0.2
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Slight delay for the outline for organic feel
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        hoverTargets.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                document.body.classList.add('hovering');
             });
-
-            gsap.from("h2", {
-                duration: 1,
-                y: -20,
-                opacity: 0,
-                ease: "power2.out"
-            });
-
-            // Roster Staggered Animation
-            gsap.from(".player-card", {
-                scrollTrigger: {
-                    trigger: "#roster",
-                    start: "top 80%",
-                },
-                y: 100,
-                opacity: 0,
-                duration: 0.8,
-                stagger: 0.15,
-                ease: "back.out(1.7)"
-            });
-
-            // About Section Text
-            gsap.utils.toArray('.animate-on-scroll').forEach(element => {
-                gsap.from(element, {
-                    scrollTrigger: {
-                        trigger: element,
-                        start: "top 85%",
-                    },
-                    y: 50,
-                    opacity: 0,
-                    duration: 1,
-                    ease: "power2.out"
-                });
-            });
-            
-            // Navbar sticky effect
-            window.addEventListener('scroll', () => {
-                const nav = document.getElementById('navbar');
-                if (window.scrollY > 50) {
-                    nav.classList.add('bg-black/90');
-                    nav.classList.add('py-0');
-                } else {
-                    nav.classList.remove('bg-black/90');
-                    nav.classList.remove('py-2');
-                }
+            el.addEventListener('mouseleave', () => {
+                document.body.classList.remove('hovering');
             });
         });
+
+        // 3. GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Preloader Logic
+        const tl = gsap.timeline();
+        
+        tl.to(".counter", {
+            innerText: 100,
+            duration: 2,
+            snap: { innerText: 5 },
+            ease: "power4.inOut",
+            onUpdate: function() {
+                this.targets()[0].innerHTML = Math.ceil(this.targets()[0].innerText) + "%";
+            }
+        })
+        .to(".counter", {
+            y: -100,
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.in"
+        })
+        .to(".preloader", {
+            height: 0,
+            duration: 1,
+            ease: "expo.inOut"
+        })
+        .from(".animate-up", {
+            y: 100,
+            opacity: 0,
+            duration: 1.5,
+            stagger: 0.2,
+            ease: "power4.out"
+        }, "-=0.5");
+
+        // Roster Reveal
+        const rows = document.querySelectorAll('.player-row');
+        rows.forEach((row, i) => {
+            gsap.from(row, {
+                scrollTrigger: {
+                    trigger: row,
+                    start: "top 90%",
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                delay: i * 0.1,
+                ease: "power3.out"
+            });
+        });
+
     </script>
 </body>
 </html>
