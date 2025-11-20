@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Dragons | 2025 Season</title>
+    <title>The Dragons | Major 2025</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fonts: Syne (для заголовків) & Space Grotesk (для тексту) -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
     
-    <!-- Libraries: GSAP, ScrollTrigger, Lenis (Smooth Scroll) -->
+    <!-- GSAP & Lenis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
@@ -23,16 +23,16 @@
             theme: {
                 extend: {
                     colors: {
-                        black: '#080808',
-                        white: '#F2F2F2',
-                        gray: '#888888'
+                        black: '#0a0a0a',
+                        white: '#f5f5f5',
+                        gray: '#1f1f1f'
                     },
                     fontFamily: {
-                        sans: ['Space Grotesk', 'sans-serif'],
+                        sans: ['Manrope', 'sans-serif'],
                         display: ['Syne', 'sans-serif'],
                     },
                     backgroundImage: {
-                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.07%22/%3E%3C/svg%3E')",
+                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.05%22/%3E%3C/svg%3E')",
                     }
                 }
             }
@@ -40,382 +40,362 @@
     </script>
 
     <style>
+        /* Global AAA Polish */
         body {
-            cursor: none; /* Приховуємо курсор */
-            background-color: #080808;
+            background-color: #0a0a0a;
+            color: #f5f5f5;
             overflow-x: hidden;
+            cursor: default; 
         }
 
-        /* Custom Cursor */
-        .cursor-dot {
-            width: 10px;
-            height: 10px;
-            background: white;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
+        /* Logo Animation */
+        .logo-spin {
+            animation: spin 10s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mix Blend Text Logic (Invert color on background) */
+        .mix-diff {
             mix-blend-mode: difference;
-            transition: transform 0.1s;
-        }
-        .cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 1px solid white;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9998;
-            mix-blend-mode: difference;
-            transition: all 0.3s ease-out;
-        }
-        
-        /* Hover state for cursor */
-        body.hovering .cursor-outline {
-            transform: scale(1.5);
-            background: white;
-            border-color: transparent;
+            color: #f5f5f5;
         }
 
-        /* Typography Utilities */
-        .text-outline {
-            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
-            color: transparent;
+        /* Split Background Logic */
+        .bg-split {
+            background: linear-gradient(180deg, #0a0a0a 50%, #f5f5f5 50%);
+        }
+        @media (min-width: 768px) {
+            .bg-split {
+                background: linear-gradient(90deg, #0a0a0a 50%, #f5f5f5 50%);
+            }
         }
 
-        /* Animations */
-        .reveal-text {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-        }
-        
-        /* Smooth Marquee */
-        .marquee-wrap {
-            white-space: nowrap;
-            overflow: hidden;
-        }
-        .marquee-inner {
-            display: inline-block;
-            animation: marquee 15s linear infinite;
-        }
-        @keyframes marquee {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-50%, 0, 0); }
-        }
+        /* Typography Scales */
+        .text-fluid-h1 { font-size: clamp(3rem, 15vw, 12rem); line-height: 0.85; }
+        .text-fluid-h2 { font-size: clamp(2rem, 8vw, 6rem); line-height: 0.9; }
+        .text-fluid-p { font-size: clamp(0.875rem, 2vw, 1.25rem); }
 
-        /* Yin Yang Hero Split */
-        .split-bg {
-            background: linear-gradient(90deg, #080808 50%, #F2F2F2 50%);
-        }
-        
-        /* Magic Blend Mode for Visibility */
-        .blend-mode-diff {
-            mix-blend-mode: difference;
-            color: #F2F2F2; /* Білий, який стане чорним на білому фоні */
-        }
+        /* Custom Scrollbar hidden */
+        ::-webkit-scrollbar { width: 0px; }
 
         /* Preloader */
         .preloader {
-            height: 100vh;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            z-index: 10000;
-            background: #080808;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: fixed; inset: 0; z-index: 9999;
+            background: #0a0a0a;
+            display: flex; justify-content: center; align-items: center;
+            transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
         }
+        
+        .slide-up { transform: translateY(-100%); }
+
+        /* Mobile Menu Overlay */
+        .menu-overlay {
+            transform: translateY(-100%);
+            transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+        .menu-open { transform: translateY(0); }
     </style>
 </head>
-<body class="antialiased text-white">
+<body class="antialiased">
 
-    <!-- NOISE OVERLAY -->
-    <div class="fixed inset-0 w-full h-full pointer-events-none z-[50] bg-noise opacity-40"></div>
-
-    <!-- CUSTOM CURSOR -->
-    <div class="cursor-dot hidden md:block"></div>
-    <div class="cursor-outline hidden md:block"></div>
+    <!-- NOISE TEXTURE (AAA Feel) -->
+    <div class="fixed inset-0 w-full h-full pointer-events-none z-50 bg-noise opacity-50"></div>
 
     <!-- PRELOADER -->
-    <div class="preloader">
-        <div class="flex flex-col items-center">
-            <div class="text-6xl md:text-9xl font-display font-bold uppercase tracking-tighter counter">0%</div>
-            <div class="mt-4 text-xs font-mono uppercase tracking-[0.5em] text-gray">Loading Assets</div>
+    <div class="preloader" id="preloader">
+        <div class="text-center">
+            <div class="font-display text-4xl md:text-6xl font-bold tracking-tighter animate-pulse text-white">
+                THE DRAGONS
+            </div>
+            <div class="mt-2 font-mono text-xs text-gray-500">INITIALIZING SEASON 2025</div>
         </div>
     </div>
 
-    <!-- NAV -->
-    <nav class="fixed top-0 w-full z-40 px-6 py-8 flex justify-between items-center blend-mode-diff">
-        <div class="font-display font-bold text-xl tracking-tighter uppercase hover-target cursor-pointer">The Dragons</div>
-        <div class="hidden md:flex gap-12 font-mono text-xs uppercase tracking-widest">
-            <a href="#roster" class="hover-target relative group">Roster
-                <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all group-hover:w-full"></span>
-            </a>
-            <a href="#about" class="hover-target relative group">About
-                <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all group-hover:w-full"></span>
-            </a>
-            <a href="#" class="hover-target relative group">Shop
-                <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all group-hover:w-full"></span>
-            </a>
+    <!-- NAV BAR -->
+    <nav class="fixed top-0 w-full z-40 px-5 py-6 flex justify-between items-center mix-diff">
+        <!-- LOGO (YIN YANG TD) -->
+        <div class="w-10 h-10 md:w-14 md:h-14 relative cursor-pointer">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full logo-spin">
+                <circle cx="50" cy="50" r="48" stroke="white" stroke-width="2"/>
+                <!-- Yang (White side, but in mix-blend it inverts) -->
+                <path d="M50 98C76.5097 98 98 76.5097 98 50C98 23.4903 76.5097 2 50 2C36.7452 2 26 12.7452 26 26C26 39.2548 36.7452 50 50 50C63.2548 50 74 60.7452 74 74C74 87.2548 63.2548 98 50 98Z" fill="white"/>
+                <!-- T (Top) -->
+                <text x="58" y="35" font-family="Syne" font-weight="bold" font-size="24" fill="black" text-anchor="middle">T</text>
+                <!-- D (Bottom) -->
+                <text x="42" y="85" font-family="Syne" font-weight="bold" font-size="24" fill="white" text-anchor="middle">D</text>
+            </svg>
         </div>
-        <div class="md:hidden font-display font-bold">MENU</div>
+
+        <!-- HAMBURGER -->
+        <button onclick="toggleMenu()" class="flex flex-col gap-1.5 group md:hidden">
+            <div class="w-8 h-[2px] bg-white transition-transform group-hover:translate-x-[-4px]"></div>
+            <div class="w-8 h-[2px] bg-white transition-transform group-hover:translate-x-[4px]"></div>
+        </button>
+
+        <!-- DESKTOP LINKS -->
+        <div class="hidden md:flex gap-10 font-mono text-sm uppercase tracking-widest">
+            <a href="#story" class="hover:line-through decoration-white">History</a>
+            <a href="#roster" class="hover:line-through decoration-white">Roster</a>
+        </div>
     </nav>
 
-    <!-- HERO SECTION -->
-    <header class="relative h-screen w-full overflow-hidden split-bg flex flex-col justify-center items-center">
+    <!-- MOBILE MENU -->
+    <div id="mobileMenu" class="menu-overlay fixed inset-0 bg-white z-30 flex flex-col justify-center items-center text-black">
+        <button onclick="toggleMenu()" class="absolute top-6 right-5 font-mono text-sm">[CLOSE]</button>
+        <nav class="flex flex-col gap-6 text-center font-display text-5xl font-bold uppercase">
+            <a href="#story" onclick="toggleMenu()">History</a>
+            <a href="#roster" onclick="toggleMenu()">Team</a>
+            <a href="#footer" onclick="toggleMenu()">Contact</a>
+        </nav>
+    </div>
+
+    <!-- HERO SECTION (Split) -->
+    <header class="relative min-h-[100dvh] w-full bg-split flex flex-col md:flex-row items-center justify-center overflow-hidden">
         
-        <!-- Central Text with Blend Mode -->
-        <div class="relative z-10 text-center mix-blend-difference text-[#F2F2F2] flex flex-col items-center">
-            <p class="font-mono text-xs md:text-sm tracking-[0.8em] uppercase mb-4 md:mb-8 animate-up">Est. 2025 Ukraine</p>
+        <div class="relative z-10 text-center mix-diff px-4 flex flex-col items-center w-full max-w-6xl">
+            <div class="font-mono text-xs md:text-sm uppercase tracking-[0.5em] mb-2 md:mb-6 animate-in">
+                Summer 2025 • Ukraine
+            </div>
             
-            <h1 class="font-display text-[15vw] leading-[0.8] font-black uppercase tracking-tighter animate-up hover-target">
+            <h1 class="font-display text-fluid-h1 font-black uppercase tracking-tighter leading-[0.8] animate-in">
                 THE<br>DRAGONS
             </h1>
-            
-            <div class="mt-8 max-w-md mx-auto text-center px-4 animate-up">
-                <p class="font-sans text-sm md:text-lg leading-relaxed font-light opacity-80 uppercase tracking-wide">
-                    Ми народжені в хаосі. Ми приносимо порядок. <br> Чорне та біле. Перемога або нічого.
+
+            <div class="mt-6 md:mt-10 flex flex-col items-center gap-4 animate-in">
+                <p class="font-sans text-xs md:text-lg max-w-md text-center uppercase font-semibold opacity-90">
+                    Баланс. Сила. Дисципліна.
                 </p>
+                <div class="w-[1px] h-10 md:h-20 bg-white mt-4"></div>
             </div>
         </div>
 
-        <!-- Decoration Circle -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30vw] h-[30vw] rounded-full border border-current opacity-20 animate-spin-slow mix-blend-difference text-white pointer-events-none"></div>
-        
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 mix-blend-difference text-white flex flex-col items-center gap-2 animate-bounce">
-            <span class="text-[10px] font-mono uppercase tracking-widest">Scroll</span>
-            <div class="w-[1px] h-12 bg-white"></div>
+        <!-- Absolute Decorative Elements -->
+        <div class="absolute bottom-5 left-5 mix-diff text-[10px] font-mono hidden md:block">
+            SCROLL FOR INTEL [ v ]
         </div>
     </header>
 
-    <!-- MARQUEE -->
-    <div class="py-6 bg-white text-black overflow-hidden border-y border-black">
-        <div class="marquee-wrap">
-            <div class="marquee-inner font-display text-4xl md:text-6xl font-bold uppercase tracking-tight">
-                Dominate the server — Tier 1 Performance — Born to win — The Dragons — Ukrainian Powerhouse — Dominate the server — Tier 1 Performance — Born to win — The Dragons —
+    <!-- STORY SECTION (The Narrative) -->
+    <section id="story" class="py-20 md:py-32 px-5 bg-black text-white relative border-t border-gray-800">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="font-display text-fluid-h2 uppercase font-bold leading-none mb-6 text-white">
+                        FROM 1000<br><span class="text-gray-600">TO MAJOR</span>
+                    </h2>
+                    <div class="w-16 h-1 bg-white mb-8"></div>
+                </div>
+                
+                <div class="font-sans text-gray-300 text-sm md:text-lg leading-relaxed space-y-6">
+                    <p>
+                        <strong class="text-white">Літо 2025.</strong> П'ятеро молодих талантів, яких ніхто не сприймав серйозно. Середній вік — 15 років.
+                    </p>
+                    <p>
+                        <strong class="text-white">Листопад 2025.</strong> Ми їдемо на Major.
+                    </p>
+                    <p class="border-l-2 border-white pl-4 italic">
+                        У кожного з нас було по 1000+ матчів на Faceit і нестримне бажання довести, що вік — це лише цифра. Ми стали командою, коли світ чекав від нас провалу.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 border-t border-gray-800 pt-10">
+                <div class="text-center p-4 border border-gray-800 hover:bg-white hover:text-black transition-colors duration-300">
+                    <div class="font-display text-3xl md:text-5xl font-bold">15</div>
+                    <div class="text-[10px] uppercase tracking-widest mt-1">Середній вік</div>
+                </div>
+                <div class="text-center p-4 border border-gray-800 hover:bg-white hover:text-black transition-colors duration-300">
+                    <div class="font-display text-3xl md:text-5xl font-bold">5</div>
+                    <div class="text-[10px] uppercase tracking-widest mt-1">Місяців до PRO</div>
+                </div>
+                <div class="text-center p-4 border border-gray-800 hover:bg-white hover:text-black transition-colors duration-300">
+                    <div class="font-display text-3xl md:text-5xl font-bold">Nov</div>
+                    <div class="text-[10px] uppercase tracking-widest mt-1">Major 2025</div>
+                </div>
+                <div class="text-center p-4 border border-gray-800 hover:bg-white hover:text-black transition-colors duration-300">
+                    <div class="font-display text-3xl md:text-5xl font-bold">T1</div>
+                    <div class="text-[10px] uppercase tracking-widest mt-1">Team Tier</div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- ROSTER SECTION -->
-    <section id="roster" class="relative bg-black py-32 px-4 md:px-10">
-        <div class="max-w-[1800px] mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-24 border-b border-white/20 pb-8">
-                <h2 class="font-display text-6xl md:text-9xl uppercase font-bold leading-none text-white">Active<br><span class="text-gray-600">Roster</span></h2>
-                <div class="text-right mt-8 md:mt-0">
-                    <p class="font-mono text-sm text-gray-400 uppercase tracking-widest">Season 2025</p>
-                    <p class="font-mono text-sm text-white uppercase tracking-widest">Main Lineup</p>
-                </div>
+    <!-- ROSTER SECTION (Compact List) -->
+    <section id="roster" class="py-20 bg-white text-black">
+        <div class="max-w-6xl mx-auto px-5">
+            <div class="mb-12 flex items-end justify-between">
+                <h2 class="font-display text-fluid-h2 font-black uppercase">The<br>Lineup</h2>
+                <span class="font-mono text-xs border border-black px-2 py-1">ACTIVE ROSTER</span>
             </div>
 
-            <!-- Player List (Vertical Brutalist Style) -->
-            <div class="flex flex-col gap-0">
+            <!-- Player List Accordion Style -->
+            <div class="flex flex-col border-t border-black">
                 
-                <!-- Player 1 -->
-                <div class="player-row group relative border-b border-white/10 py-16 hover:bg-white hover:text-black transition-all duration-500 cursor-none">
-                    <div class="flex flex-col md:flex-row justify-between items-center relative z-10 px-4 hover-target">
-                        <div class="md:w-1/3 text-left">
-                            <span class="font-mono text-xs border border-current px-3 py-1 rounded-full uppercase tracking-widest">IGL / Entry</span>
+                <!-- CryPanter -->
+                <div class="group relative border-b border-black py-6 md:py-10 hover:bg-black hover:text-white transition-all duration-300 cursor-pointer overflow-hidden">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between relative z-10">
+                        <div class="flex items-baseline gap-4 mb-2 md:mb-0">
+                            <span class="font-mono text-xs md:text-sm opacity-50">01</span>
+                            <h3 class="font-display text-3xl md:text-6xl font-bold uppercase">CryPanter</h3>
                         </div>
-                        <div class="md:w-1/3 text-center">
-                            <h3 class="font-display text-5xl md:text-8xl font-bold uppercase tracking-tighter transition-transform group-hover:scale-110 duration-500">CryPanter</h3>
-                        </div>
-                        <div class="md:w-1/3 text-right hidden md:block">
-                            <span class="font-display text-6xl font-bold opacity-20 group-hover:opacity-100 transition-opacity">01</span>
+                        <div class="flex items-center gap-4">
+                            <span class="text-[10px] md:text-xs font-mono border border-current px-2 py-1 rounded-full">IGL / ENTRY</span>
+                            <svg class="w-4 h-4 md:w-6 md:h-6 transform group-hover:rotate-45 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </div>
                     </div>
-                    <!-- Hover Image (Reveals on hover) -->
-                    <img src="https://ui-avatars.com/api/?name=C+P&background=000&color=fff&size=512" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] object-cover opacity-0 group-hover:opacity-20 pointer-events-none transition-opacity duration-300 blur-sm z-0 grayscale" alt="">
+                    <!-- Hover Stat Reveal -->
+                    <div class="h-0 group-hover:h-auto overflow-hidden transition-all duration-500 ease-in-out">
+                        <div class="pt-4 text-xs font-mono opacity-70">
+                            "Лідер зграї. Перший входить, останній виходить."
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Player 2 -->
-                <div class="player-row group relative border-b border-white/10 py-16 hover:bg-white hover:text-black transition-all duration-500 cursor-none">
-                    <div class="flex flex-col md:flex-row justify-between items-center relative z-10 px-4 hover-target">
-                        <div class="md:w-1/3 text-left">
-                            <span class="font-mono text-xs border border-current px-3 py-1 rounded-full uppercase tracking-widest">AWPer</span>
+                <!-- MrKolesnyk -->
+                <div class="group relative border-b border-black py-6 md:py-10 hover:bg-black hover:text-white transition-all duration-300 cursor-pointer overflow-hidden">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between relative z-10">
+                        <div class="flex items-baseline gap-4 mb-2 md:mb-0">
+                            <span class="font-mono text-xs md:text-sm opacity-50">02</span>
+                            <h3 class="font-display text-3xl md:text-6xl font-bold uppercase">MrKolesnyk</h3>
                         </div>
-                        <div class="md:w-1/3 text-center">
-                            <h3 class="font-display text-5xl md:text-8xl font-bold uppercase tracking-tighter transition-transform group-hover:scale-110 duration-500">MrKolesnyk</h3>
-                        </div>
-                        <div class="md:w-1/3 text-right hidden md:block">
-                            <span class="font-display text-6xl font-bold opacity-20 group-hover:opacity-100 transition-opacity">02</span>
+                        <div class="flex items-center gap-4">
+                            <span class="text-[10px] md:text-xs font-mono border border-current px-2 py-1 rounded-full">AWPER</span>
+                            <svg class="w-4 h-4 md:w-6 md:h-6 transform group-hover:rotate-45 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </div>
                     </div>
-                    <img src="https://ui-avatars.com/api/?name=M+K&background=fff&color=000&size=512" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] object-cover opacity-0 group-hover:opacity-20 pointer-events-none transition-opacity duration-300 blur-sm z-0 grayscale" alt="">
+                    <div class="h-0 group-hover:h-auto overflow-hidden transition-all duration-500 ease-in-out">
+                        <div class="pt-4 text-xs font-mono opacity-70">
+                            "Його приціл — це вирок. Magic Stick в дії."
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Player 3 -->
-                <div class="player-row group relative border-b border-white/10 py-16 hover:bg-white hover:text-black transition-all duration-500 cursor-none">
-                    <div class="flex flex-col md:flex-row justify-between items-center relative z-10 px-4 hover-target">
-                        <div class="md:w-1/3 text-left">
-                            <span class="font-mono text-xs border border-current px-3 py-1 rounded-full uppercase tracking-widest">Rifler</span>
+                <!-- Nergo -->
+                <div class="group relative border-b border-black py-6 md:py-10 hover:bg-black hover:text-white transition-all duration-300 cursor-pointer overflow-hidden">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between relative z-10">
+                        <div class="flex items-baseline gap-4 mb-2 md:mb-0">
+                            <span class="font-mono text-xs md:text-sm opacity-50">03</span>
+                            <h3 class="font-display text-3xl md:text-6xl font-bold uppercase">Nergo</h3>
                         </div>
-                        <div class="md:w-1/3 text-center">
-                            <h3 class="font-display text-5xl md:text-8xl font-bold uppercase tracking-tighter transition-transform group-hover:scale-110 duration-500">Nergo</h3>
-                        </div>
-                        <div class="md:w-1/3 text-right hidden md:block">
-                            <span class="font-display text-6xl font-bold opacity-20 group-hover:opacity-100 transition-opacity">03</span>
+                        <div class="flex items-center gap-4">
+                            <span class="text-[10px] md:text-xs font-mono border border-current px-2 py-1 rounded-full">RIFLER</span>
+                            <svg class="w-4 h-4 md:w-6 md:h-6 transform group-hover:rotate-45 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </div>
                     </div>
-                    <img src="https://ui-avatars.com/api/?name=N+G&background=000&color=fff&size=512" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] object-cover opacity-0 group-hover:opacity-20 pointer-events-none transition-opacity duration-300 blur-sm z-0 grayscale" alt="">
+                    <div class="h-0 group-hover:h-auto overflow-hidden transition-all duration-500 ease-in-out">
+                        <div class="pt-4 text-xs font-mono opacity-70">
+                            "Стабільність та вогнева міць. AIM GOD."
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Player 4 -->
-                <div class="player-row group relative border-b border-white/10 py-16 hover:bg-white hover:text-black transition-all duration-500 cursor-none">
-                    <div class="flex flex-col md:flex-row justify-between items-center relative z-10 px-4 hover-target">
-                        <div class="md:w-1/3 text-left">
-                            <span class="font-mono text-xs border border-current px-3 py-1 rounded-full uppercase tracking-widest">Rifler / Support</span>
+                <!-- ATBESHKA -->
+                <div class="group relative border-b border-black py-6 md:py-10 hover:bg-black hover:text-white transition-all duration-300 cursor-pointer overflow-hidden">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between relative z-10">
+                        <div class="flex items-baseline gap-4 mb-2 md:mb-0">
+                            <span class="font-mono text-xs md:text-sm opacity-50">04</span>
+                            <h3 class="font-display text-3xl md:text-6xl font-bold uppercase">ATBESHKA</h3>
                         </div>
-                        <div class="md:w-1/3 text-center">
-                            <h3 class="font-display text-5xl md:text-8xl font-bold uppercase tracking-tighter transition-transform group-hover:scale-110 duration-500">ATBESHKA</h3>
-                        </div>
-                        <div class="md:w-1/3 text-right hidden md:block">
-                            <span class="font-display text-6xl font-bold opacity-20 group-hover:opacity-100 transition-opacity">04</span>
+                        <div class="flex items-center gap-4">
+                            <span class="text-[10px] md:text-xs font-mono border border-current px-2 py-1 rounded-full">RIFLER / SUP</span>
+                            <svg class="w-4 h-4 md:w-6 md:h-6 transform group-hover:rotate-45 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </div>
                     </div>
-                    <img src="https://ui-avatars.com/api/?name=A+T&background=fff&color=000&size=512" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] object-cover opacity-0 group-hover:opacity-20 pointer-events-none transition-opacity duration-300 blur-sm z-0 grayscale" alt="">
+                    <div class="h-0 group-hover:h-auto overflow-hidden transition-all duration-500 ease-in-out">
+                        <div class="pt-4 text-xs font-mono opacity-70">
+                            "Клатч-міністр. Коли немає надії, є ATBESHKA."
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Player 5 -->
-                <div class="player-row group relative border-b border-white/10 py-16 hover:bg-white hover:text-black transition-all duration-500 cursor-none">
-                    <div class="flex flex-col md:flex-row justify-between items-center relative z-10 px-4 hover-target">
-                        <div class="md:w-1/3 text-left">
-                            <span class="font-mono text-xs border border-current px-3 py-1 rounded-full uppercase tracking-widest">Lurker</span>
+                <!-- Zavik4 -->
+                <div class="group relative border-b border-black py-6 md:py-10 hover:bg-black hover:text-white transition-all duration-300 cursor-pointer overflow-hidden">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between relative z-10">
+                        <div class="flex items-baseline gap-4 mb-2 md:mb-0">
+                            <span class="font-mono text-xs md:text-sm opacity-50">05</span>
+                            <h3 class="font-display text-3xl md:text-6xl font-bold uppercase">Zavik4</h3>
                         </div>
-                        <div class="md:w-1/3 text-center">
-                            <h3 class="font-display text-5xl md:text-8xl font-bold uppercase tracking-tighter transition-transform group-hover:scale-110 duration-500">Zavik4</h3>
-                        </div>
-                        <div class="md:w-1/3 text-right hidden md:block">
-                            <span class="font-display text-6xl font-bold opacity-20 group-hover:opacity-100 transition-opacity">05</span>
+                        <div class="flex items-center gap-4">
+                            <span class="text-[10px] md:text-xs font-mono border border-current px-2 py-1 rounded-full">LURKER</span>
+                            <svg class="w-4 h-4 md:w-6 md:h-6 transform group-hover:rotate-45 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </div>
                     </div>
-                    <img src="https://ui-avatars.com/api/?name=Z+V&background=000&color=fff&size=512" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] object-cover opacity-0 group-hover:opacity-20 pointer-events-none transition-opacity duration-300 blur-sm z-0 grayscale" alt="">
+                    <div class="h-0 group-hover:h-auto overflow-hidden transition-all duration-500 ease-in-out">
+                        <div class="pt-4 text-xs font-mono opacity-70">
+                            "Тиша перед бурею. Він завжди позаду ворога."
+                        </div>
+                    </div>
                 </div>
 
             </div>
         </div>
     </section>
 
-    <!-- BIG FOOTER (MINIMALIST) -->
-    <footer class="bg-white text-black py-20 md:py-32 px-6 relative overflow-hidden">
-        <div class="max-w-[1800px] mx-auto flex flex-col justify-between h-full">
-            <div class="mb-20">
-                <h2 class="font-display text-[12vw] leading-none font-black uppercase tracking-tighter text-black text-center md:text-left">
-                    Ready to<br>Strike
-                </h2>
+    <!-- FOOTER (Pure Minimal) -->
+    <footer id="footer" class="bg-black text-white py-12 px-5 border-t border-gray-800">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-end">
+            <div>
+                <h2 class="font-display text-4xl font-bold uppercase tracking-tighter mb-2">The Dragons</h2>
+                <p class="font-mono text-xs text-gray-500">UKRAINE, EST. 2025</p>
             </div>
-            
-            <div class="flex flex-col md:flex-row justify-between items-end border-t border-black pt-8">
-                <div class="font-mono text-sm uppercase tracking-widest mb-4 md:mb-0">
-                    Kyiv, Ukraine<br>
-                    Est. 2025
-                </div>
-                
-                <div class="font-display font-bold text-xl uppercase tracking-tighter">
-                    © 2025 THE DRAGONS
-                </div>
+            <div class="text-right mt-8 md:mt-0">
+                <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">Tier 1 Organization</p>
+                <p class="font-sans font-bold text-lg mt-1">© 2025</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // 1. Initialize Lenis (Smooth Scroll)
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
+        // 1. Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('menu-open');
+        }
+
+        // 2. Preloader Logic
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('slide-up');
+            }, 1500);
         });
 
+        // 3. Initialize Smooth Scroll (Lenis)
+        const lenis = new Lenis({
+            lerp: 0.1,
+            smooth: true,
+        });
         function raf(time) {
             lenis.raf(time);
             requestAnimationFrame(raf);
         }
         requestAnimationFrame(raf);
 
-        // 2. Custom Cursor Logic
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorOutline = document.querySelector('.cursor-outline');
-        const hoverTargets = document.querySelectorAll('.hover-target');
-
-        window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-
-            // Slight delay for the outline for organic feel
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 500, fill: "forwards" });
-        });
-
-        hoverTargets.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                document.body.classList.add('hovering');
-            });
-            el.addEventListener('mouseleave', () => {
-                document.body.classList.remove('hovering');
-            });
-        });
-
-        // 3. GSAP Animations
+        // 4. GSAP Animations
         gsap.registerPlugin(ScrollTrigger);
 
-        // Preloader Logic
-        const tl = gsap.timeline();
-        
-        tl.to(".counter", {
-            innerText: 100,
-            duration: 2,
-            snap: { innerText: 5 },
-            ease: "power4.inOut",
-            onUpdate: function() {
-                this.targets()[0].innerHTML = Math.ceil(this.targets()[0].innerText) + "%";
-            }
-        })
-        .to(".counter", {
-            y: -100,
-            opacity: 0,
-            duration: 0.5,
-            ease: "power2.in"
-        })
-        .to(".preloader", {
-            height: 0,
-            duration: 1,
-            ease: "expo.inOut"
-        })
-        .from(".animate-up", {
+        // Hero Text Reveal
+        gsap.from(".animate-in", {
             y: 100,
             opacity: 0,
             duration: 1.5,
             stagger: 0.2,
-            ease: "power4.out"
-        }, "-=0.5");
-
-        // Roster Reveal
-        const rows = document.querySelectorAll('.player-row');
-        rows.forEach((row, i) => {
-            gsap.from(row, {
-                scrollTrigger: {
-                    trigger: row,
-                    start: "top 90%",
-                },
-                y: 50,
-                opacity: 0,
-                duration: 1,
-                delay: i * 0.1,
-                ease: "power3.out"
-            });
+            ease: "power4.out",
+            delay: 1.8 // Wait for preloader
         });
 
+        // Story Reveal
+        gsap.from("#story h2", {
+            scrollTrigger: { trigger: "#story", start: "top 80%" },
+            y: 50, opacity: 0, duration: 1
+        });
+        gsap.from("#story p", {
+            scrollTrigger: { trigger: "#story", start: "top 80%" },
+            y: 30, opacity: 0, duration: 1, delay: 0.2, stagger: 0.1
+        });
     </script>
 </body>
 </html>
