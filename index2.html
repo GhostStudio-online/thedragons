@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sasha Knowledge Test | Тест на знання Саші</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js for Logic -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    animation: {
+                        'spin-slow': 'spin 8s linear infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-up': 'slideUp 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Yin Yang Styles and Scrollbar hiding */
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .yin-yang-loader {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(to bottom, #ffffff 50%, #000000 50%);
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            position: relative;
+            animation: spin 3s linear infinite;
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+        
+        .yin-yang-loader:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            background: #ffffff;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            box-shadow: inset 0 0 0 10px #000000;
+        }
+        
+        .yin-yang-loader:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            background: #000000;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            box-shadow: inset 0 0 0 10px #ffffff;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-option {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .btn-option:hover {
+            transform: translateX(5px);
+            background: #ffffff;
+            color: #000000;
+        }
+
+        /* Circular Progress */
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+</head>
+<body x-data="quizApp()" x-init="initApp()" class="min-h-screen flex flex-col selection:bg-white selection:text-black">
+
+    <!-- Background Elements -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-white/5 blur-[100px]"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-white/5 blur-[80px]"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="w-full p-6 flex justify-between items-center z-20 fixed top-0">
+        <div class="text-xl font-bold tracking-widest uppercase border-2 border-white px-3 py-1 cursor-pointer hover:bg-white hover:text-black transition" @click="goHome()">
+            Sasha<span class="font-light">Test</span>
+        </div>
+        <div class="flex gap-4 items-center">
+            <button @click="toggleLang()" class="text-sm font-semibold hover:text-gray-400 transition uppercase tracking-wider" x-text="lang"></button>
+            <button @click="viewHistory()" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition" title="History">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow flex items-center justify-center p-4 pt-24 w-full max-w-3xl mx-auto relative">
+
+        <!-- VIEW: HOME -->
+        <div x-show="view === 'home'" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" class="text-center flex flex-col items-center w-full">
+            
+            <div class="yin-yang-loader mb-8"></div>
+            
+            <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tighter animate-slide-up" style="animation-delay: 0.1s;">
+                <span x-text="t('title_1')"></span> <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500" x-text="t('title_2')"></span>
+            </h1>
+            
+            <p class="text-gray-400 mb-10 text-lg max-w-md animate-slide-up" style="animation-delay: 0.2s;" x-text="t('subtitle')"></p>
+            
+            <button @click="startQuiz()" class="group relative px-8 py-4 bg-white text-black font-bold text-lg tracking-wider overflow-hidden rounded-full hover:scale-105 transition duration-300 animate-slide-up" style="animation-delay: 0.3s;">
+                <span class="relative z-10" x-text="t('start_btn')"></span>
+                <div class="absolute inset-0 bg-gray-200 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+            </button>
+        </div>
+
+        <!-- VIEW: QUIZ -->
+        <div x-show="view === 'quiz'" x-cloak class="w-full" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
+            
+            <!-- Progress Bar -->
+            <div class="w-full h-1 bg-gray-800 rounded-full mb-8 overflow-hidden">
+                <div class="h-full bg-white transition-all duration-500 ease-out" :style="`width: ${((currentQuestionIndex + 1) / totalQuestions) * 100}%`"></div>
+            </div>
+
+            <div class="flex justify-between items-end mb-6">
+                <span class="text-gray-500 text-sm uppercase tracking-widest" x-text="getLevelTitle()"></span>
+                <span class="text-4xl font-black text-white/20">
+                    <span x-text="currentQuestionIndex + 1"></span><span class="text-lg">/<span x-text="totalQuestions"></span></span>
+                </span>
+            </div>
+
+            <!-- Question Card -->
+            <div class="glass-panel p-8 rounded-2xl shadow-2xl mb-6 min-h-[200px] flex items-center justify-center relative overflow-hidden group">
+                <div class="absolute -right-10 -bottom-10 text-9xl text-white/5 font-serif italic z-0 select-none">?</div>
+                <h2 class="text-2xl md:text-3xl font-bold text-center z-10 relative leading-relaxed" x-text="getCurrentQuestionText()"></h2>
+            </div>
+
+            <!-- Options -->
+            <div class="grid grid-cols-1 gap-4">
+                <template x-for="(option, index) in shuffledOptions" :key="index">
+                    <button 
+                        @click="selectAnswer(option)"
+                        class="btn-option w-full p-5 text-left border border-white/20 rounded-xl flex justify-between items-center group bg-black/40 backdrop-blur-sm"
+                    >
+                        <span class="text-lg font-medium" x-text="option"></span>
+                        <i class="fa-solid fa-chevron-right opacity-0 group-hover:opacity-100 transition-opacity text-sm"></i>
+                    </button>
+                </template>
+            </div>
+        </div>
+
+        <!-- VIEW: RESULT -->
+        <div x-show="view === 'result'" x-cloak class="w-full flex flex-col items-center" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
+            
+            <h2 class="text-3xl font-bold mb-2" x-text="t('results_title')"></h2>
+            <p class="text-gray-400 mb-8" x-text="getResultComment()"></p>
+
+            <!-- Circle Chart -->
+            <div class="relative w-48 h-48 mb-10">
+                <svg class="w-full h-full" viewBox="0 0 120 120">
+                    <circle class="text-gray-800 stroke-current" stroke-width="8" cx="60" cy="60" r="52" fill="transparent"></circle>
+                    <circle 
+                        class="text-white progress-ring__circle stroke-current" 
+                        stroke-width="8" 
+                        stroke-linecap="round" 
+                        cx="60" cy="60" r="52" 
+                        fill="transparent" 
+                        :stroke-dasharray="326" 
+                        :stroke-dashoffset="326 - (326 * scorePercentage / 100)"
+                    ></circle>
+                </svg>
+                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                    <span class="text-4xl font-black" x-text="Math.round(scorePercentage) + '%'"></span>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest" x-text="t('accuracy')"></span>
+                </div>
+            </div>
+
+            <!-- Details List -->
+            <div class="w-full glass-panel rounded-2xl p-6 mb-8 max-h-96 overflow-y-auto custom-scroll">
+                <h3 class="text-sm uppercase tracking-widest text-gray-500 mb-4 sticky top-0 bg-[#0a0a0a] py-2 z-10" x-text="t('breakdown')"></h3>
+                
+                <template x-for="(item, index) in sessionResults" :key="index">
+                    <div class="mb-6 border-b border-white/10 pb-4 last:border-0 last:pb-0">
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1">
+                                <i x-show="item.isCorrect" class="fa-solid fa-check text-white bg-white/20 p-1 rounded-full text-xs"></i>
+                                <i x-show="!item.isCorrect" class="fa-solid fa-xmark text-gray-500 border border-gray-500 p-1 rounded-full text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-300 mb-2" x-text="item.question"></p>
+                                <div class="flex flex-col gap-1">
+                                    <p class="text-xs" :class="{'text-white font-bold': item.isCorrect, 'text-gray-500 line-through': !item.isCorrect}">
+                                        <span x-text="t('your_answer')"></span>: <span x-text="item.userAnswer"></span>
+                                    </p>
+                                    <p x-show="!item.isCorrect" class="text-xs text-white font-bold animate-pulse">
+                                        <span x-text="t('correct_answer')"></span>: <span x-text="item.correctAnswer"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <div class="flex gap-4 w-full">
+                <button @click="goHome()" class="flex-1 py-4 border border-white text-white font-bold rounded-xl hover:bg-white hover:text-black transition uppercase tracking-widest text-sm">
+                    <i class="fa-solid fa-house mr-2"></i> <span x-text="t('home')"></span>
+                </button>
+                <button @click="startQuiz()" class="flex-1 py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                    <i class="fa-solid fa-rotate-right mr-2"></i> <span x-text="t('retry')"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- VIEW: HISTORY -->
+        <div x-show="view === 'history'" x-cloak class="w-full flex flex-col h-[80vh]" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-10" x-transition:enter-end="opacity-100 translate-x-0">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold" x-text="t('history_title')"></h2>
+                <button @click="clearHistory" class="text-xs text-gray-500 hover:text-white underline" x-text="t('clear')"></button>
+            </div>
+
+            <div class="flex-grow overflow-y-auto custom-scroll glass-panel rounded-2xl p-1">
+                <template x-if="history.length === 0">
+                    <div class="h-full flex flex-col items-center justify-center text-gray-500">
+                        <i class="fa-solid fa-ghost text-4xl mb-4 opacity-50"></i>
+                        <p x-text="t('no_history')"></p>
+                    </div>
+                </template>
+
+                <template x-for="(record, index) in history" :key="index">
+                    <div class="p-4 m-2 rounded-xl bg-white/5 border border-white/5 flex justify-between items-center hover:bg-white/10 transition">
+                        <div>
+                            <p class="text-xs text-gray-400 mb-1" x-text="record.date"></p>
+                            <p class="font-bold text-lg"><span x-text="record.score"></span>/<span x-text="record.total"></span></p>
+                        </div>
+                        <div class="relative w-12 h-12 flex items-center justify-center rounded-full border-2" :class="getScoreColorClass(record.percentage)">
+                            <span class="text-xs font-bold" x-text="Math.round(record.percentage) + '%'"></span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <button @click="goHome()" class="mt-6 w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition uppercase tracking-widest">
+                <span x-text="t('back')"></span>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="fixed bottom-4 w-full text-center text-xs text-gray-600 z-10 pointer-events-none">
+        <p>Yin Yang Design &copy; 2025</p>
+    </footer>
+
+    <script>
+        function quizApp() {
+            return {
+                lang: 'uk',
+                view: 'home', // home, quiz, result, history
+                
+                // Quiz State
+                currentQuestionIndex: 0,
+                shuffledOptions: [],
+                userAnswers: [],
+                sessionResults: [],
+                history: [],
+                
+                // Translations
+                translations: {
+                    uk: {
+                        title_1: "НАСКІЛЬКИ ТИ ЗНАЄШ",
+                        title_2: "САШУ?",
+                        subtitle: "Пройди тест у стилі Інь та Ян і дізнайся, чи справді ти знаєш мене, чи це лише ілюзія.",
+                        start_btn: "РОЗПОЧАТИ ТЕСТ",
+                        results_title: "Твій Результат",
+                        accuracy: "Точність",
+                        breakdown: "Детальний розбір",
+                        your_answer: "Ти",
+                        correct_answer: "Вірно",
+                        home: "На Головну",
+                        retry: "Спробувати ще",
+                        history_title: "Історія спроб",
+                        clear: "Очистити",
+                        no_history: "Історія порожня...",
+                        back: "Назад",
+                        level: "Рівень",
+                        
+                        // Results comments
+                        perfect: "Ти знаєш мене краще, ніж я сам! 🤍🖤",
+                        good: "Непогано, але є куди рости. 🌗",
+                        bad: "Ти взагалі мене знаєш? 🌑",
+
+                        // Question Texts
+                        q1_l1: "Чи пускає Саша до себе додому?",
+                        q2_l1: "Скільки у Саші домашніх тварин?",
+                        q3_l1: "Саша любить гуляти?",
+                        
+                        q1_l2: "Саша веде ютуб канал?",
+                        q2_l2: "Саша займається спортом?",
+                        q3_l2: "Саша в депресії зараз?",
+                        
+                        q1_l3: "Саша любить гірчицю?",
+                        q2_l3: "Саша спить по нормі сну?",
+                        q3_l3: "У Саші була дівчина?",
+
+                        // Answers
+                        yes: "Так",
+                        no: "Ні",
+                        maybe: "Можливо",
+                        correct_no: "Ні", // For display in results
+                        correct_4: "4",
+                        sometimes: "Іноді",
+                        almost: "Майже",
+                        no_course: "Ні звісно",
+                        base: "Це база"
+                    },
+                    ru: {
+                        title_1: "НАСКОЛЬКО ТЫ ЗНАЕШЬ",
+                        title_2: "САШУ?",
+                        subtitle: "Пройди тест в стиле Инь и Ян и узнай, действительно ли ты знаешь меня или это лишь иллюзия.",
+                        start_btn: "НАЧАТЬ ТЕСТ",
+                        results_title: "Твой Результат",
+                        accuracy: "Точность",
+                        breakdown: "Подробный разбор",
+                        your_answer: "Ты",
+                        correct_answer: "Верно",
+                        home: "На Главную",
+                        retry: "Попробовать еще",
+                        history_title: "История попыток",
+                        clear: "Очистить",
+                        no_history: "История пуста...",
+                        back: "Назад",
+                        level: "Уровень",
+
+                        perfect: "Ты знаешь меня лучше, чем я сам! 🤍🖤",
+                        good: "Неплохо, но есть куда расти. 🌗",
+                        bad: "Ты вообще меня знаешь? 🌑",
+
+                        q1_l1: "Пускает ли Саша к себе домой?",
+                        q2_l1: "Сколько у Саши домашних животных?",
+                        q3_l1: "Саша любит гулять?",
+                        
+                        q1_l2: "Саша ведет ютуб канал?",
+                        q2_l2: "Саша занимается спортом?",
+                        q3_l2: "Саша в дипрессии сейчас?",
+                        
+                        q1_l3: "Саша любит горчицу?",
+                        q2_l3: "Саша спит по норме сна?",
+                        q3_l3: "У Саши была девушка?",
+
+                        yes: "Да",
+                        no: "Нет",
+                        maybe: "Возможно",
+                        correct_no: "Нет",
+                        correct_4: "4",
+                        sometimes: "Иногда",
+                        almost: "Почти",
+                        no_course: "Нет конечно",
+                        base: "Это база"
+                    }
+                },
+
+                // Raw Questions Data Structure
+                // Note: 'correct' field matches one of the 'options' keys or values implicitly
+                questionsBase: [
+                    // Level I
+                    { 
+                        id: 'q1_l1', level: 'I', 
+                        options: ['yes', 'no'], 
+                        correctKey: 'no' 
+                    },
+                    { 
+                        id: 'q2_l1', level: 'I', 
+                        options: ['52', '3', '4', '7'], 
+                        correctRaw: '4' // Numerical/Fixed answers not translated directly same way
+                    },
+                    { 
+                        id: 'q3_l1', level: 'I', 
+                        options: ['yes_abs', 'sometimes', 'everyday'], 
+                        correctKey: 'sometimes',
+                        customOptions: { // Special handling for long funny answers
+                            uk: ['Та що за питання звісно так йопта', 'Іноді', 'Єбашить кожен день'],
+                            ru: ['Да че за вопрос конечно да епта', 'Иногда', 'Ебашит каждый день']
+                        }
+                    },
+                    // Level II
+                    { 
+                        id: 'q1_l2', level: 'II', 
+                        options: ['yes', 'no', 'maybe', 'planning', 'deleted'], 
+                        correctKey: 'no',
+                        customOptions: {
+                            uk: ['Так', 'Ні', 'Можливо', 'Планує', 'Видалив'],
+                            ru: ['Да', 'Нет', 'Возможно', 'Планирует', 'Удалил']
+                        }
+                    },
+                    { 
+                        id: 'q2_l2', level: 'II', 
+                        options: ['yes', 'no', 'almost'], 
+                        correctKey: 'almost' 
+                    },
+                    { 
+                        id: 'q3_l2', level: 'II', 
+                        options: ['yes', 'course', 'base', 'no'], 
+                        correctKey: 'no',
+                        customOptions: {
+                            uk: ['Так', 'Звісно', 'Це база', 'Ні'],
+                            ru: ['Да', 'Конечно', 'Это база', 'Нет']
+                        }
+                    },
+                    // Level III
+                    { 
+                        id: 'q1_l3', level: 'III', 
+                        options: ['yes', 'no'], 
+                        correctKey: 'yes' 
+                    },
+                    { 
+                        id: 'q2_l3', level: 'III', 
+                        options: ['yes_course', 'yes', 'no', 'no_course'], 
+                        correctKey: 'no_course',
+                        customOptions: {
+                             uk: ['Так звісно', 'Так', 'Ні', 'Ні звісно'],
+                             ru: ['Да конечно', 'Да', 'Нет', 'Нет конечно']
+                        }
+                    },
+                    { 
+                        id: 'q3_l3', level: 'III', 
+                        options: ['no', 'yes', 'maybe'], 
+                        correctKey: 'no' 
+                    }
+                ],
+
+                get totalQuestions() { return this.questionsBase.length; },
+                
+                get scorePercentage() {
+                    const correct = this.sessionResults.filter(r => r.isCorrect).length;
+                    return (correct / this.totalQuestions) * 100;
+                },
+
+                initApp() {
+                    this.loadHistory();
+                    // Check browser lang or default to UK
+                    // this.lang = 'uk';
+                },
+
+                t(key) {
+                    return this.translations[this.lang][key] || key;
+                },
+
+                toggleLang() {
+                    this.lang = this.lang === 'uk' ? 'ru' : 'uk';
+                    // If in quiz, refresh options text
+                    if (this.view === 'quiz') {
+                        this.prepareCurrentQuestion();
+                    }
+                },
+
+                goHome() {
+                    this.view = 'home';
+                },
+
+                startQuiz() {
+                    this.currentQuestionIndex = 0;
+                    this.userAnswers = [];
+                    this.sessionResults = [];
+                    this.view = 'quiz';
+                    this.prepareCurrentQuestion();
+                },
+
+                getLevelTitle() {
+                    const q = this.questionsBase[this.currentQuestionIndex];
+                    return `${this.t('level')} ${q.level}`;
+                },
+
+                getCurrentQuestionText() {
+                    const qId = this.questionsBase[this.currentQuestionIndex].id;
+                    return this.t(qId);
+                },
+
+                prepareCurrentQuestion() {
+                    const q = this.questionsBase[this.currentQuestionIndex];
+                    let opts = [];
+
+                    // Determine texts for options
+                    if (q.customOptions) {
+                        opts = [...q.customOptions[this.lang]];
+                    } else if (q.options) {
+                        opts = q.options.map(optKey => {
+                            // If it's a number (like '4' or '52'), keep it, else translate
+                            return isNaN(optKey) ? this.t(optKey) : optKey;
+                        });
+                    }
+
+                    // Determine Correct Answer String for comparison later
+                    // We need to attach the "isCorrect" flag to the shuffled objects
+                    // But to keep it simple with strings and UI, let's map strings to correct bool
+                    
+                    // 1. Find the correct string
+                    let correctString = '';
+                    if (q.correctRaw) {
+                        correctString = q.correctRaw;
+                    } else if (q.correctKey) {
+                        if (q.customOptions) {
+                            // Find index of correctKey in options list? 
+                            // Wait, customOptions array matches options keys array by index?
+                            // Let's assume logic: customOptions ordered same as options keys
+                            const idx = q.options.indexOf(q.correctKey);
+                            correctString = q.customOptions[this.lang][idx];
+                        } else {
+                            correctString = this.t(q.correctKey);
+                        }
+                    }
+
+                    // 2. Create array of string options
+                    this.shuffledOptions = this.shuffleArray([...opts]);
+                    
+                    // Store correct string in state temporarily to verify answer
+                    this.currentCorrectAnswerString = correctString;
+                },
+
+                shuffleArray(array) {
+                    for (let i = array.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [array[i], array[j]] = [array[j], array[i]];
+                    }
+                    return array;
+                },
+
+                selectAnswer(selectedOption) {
+                    const isCorrect = selectedOption === this.currentCorrectAnswerString;
+                    
+                    // Save result
+                    this.sessionResults.push({
+                        question: this.getCurrentQuestionText(),
+                        userAnswer: selectedOption,
+                        correctAnswer: this.currentCorrectAnswerString,
+                        isCorrect: isCorrect
+                    });
+
+                    if (this.currentQuestionIndex < this.totalQuestions - 1) {
+                        this.currentQuestionIndex++;
+                        setTimeout(() => {
+                            this.prepareCurrentQuestion();
+                        }, 200); // slight delay for visual feel
+                    } else {
+                        this.finishQuiz();
+                    }
+                },
+
+                finishQuiz() {
+                    this.saveToHistory();
+                    this.view = 'result';
+                },
+
+                getResultComment() {
+                    const pct = this.scorePercentage;
+                    if (pct === 100) return this.t('perfect');
+                    if (pct >= 50) return this.t('good');
+                    return this.t('bad');
+                },
+
+                saveToHistory() {
+                    const score = this.sessionResults.filter(r => r.isCorrect).length;
+                    const record = {
+                        date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                        score: score,
+                        total: this.totalQuestions,
+                        percentage: this.scorePercentage
+                    };
+                    
+                    this.history.unshift(record); // Add to top
+                    localStorage.setItem('sasha_quiz_history', JSON.stringify(this.history));
+                },
+
+                loadHistory() {
+                    const stored = localStorage.getItem('sasha_quiz_history');
+                    if (stored) {
+                        this.history = JSON.parse(stored);
+                    }
+                },
+
+                viewHistory() {
+                    this.loadHistory();
+                    this.view = 'history';
+                },
+                
+                clearHistory() {
+                    this.history = [];
+                    localStorage.removeItem('sasha_quiz_history');
+                },
+
+                getScoreColorClass(percentage) {
+                    if (percentage === 100) return 'border-white text-white';
+                    if (percentage >= 50) return 'border-gray-400 text-gray-300';
+                    return 'border-gray-700 text-gray-600';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
