@@ -54,9 +54,6 @@
             overflow: hidden;
         }
 
-        .logo-spin { animation: spin 10s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
         .mix-diff { mix-blend-mode: difference; color: #f5f5f5; }
 
         .bg-split { background: linear-gradient(180deg, #0a0a0a 50%, #f5f5f5 50%); }
@@ -121,12 +118,13 @@
 
     <nav class="fixed top-0 w-full z-40 px-5 py-6 flex justify-between items-center mix-diff pointer-events-none">
         <div class="w-10 h-10 md:w-14 md:h-14 relative cursor-pointer pointer-events-auto">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full logo-spin">
+            <img src="./src/images/ic.png" alt="Icon" class="w-full h-full">
+            <!-- <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full logo-spin">
                 <circle cx="50" cy="50" r="48" stroke="white" stroke-width="2"/>
                 <path d="M50 98C76.5097 98 98 76.5097 98 50C98 23.4903 76.5097 2 50 2C36.7452 2 26 12.7452 26 26C26 39.2548 36.7452 50 50 50C63.2548 50 74 60.7452 74 74C74 87.2548 63.2548 98 50 98Z" fill="white"/>
                 <text x="58" y="35" font-family="Syne" font-weight="bold" font-size="24" fill="black" text-anchor="middle">T</text>
                 <text x="42" y="85" font-family="Syne" font-weight="bold" font-size="24" fill="white" text-anchor="middle">D</text>
-            </svg>
+            </svg> -->
         </div>
 
         <button id="burgerBtn" onclick="toggleMenu()" class="burger-btn w-12 h-12 relative pointer-events-auto md:hidden focus:outline-none">
